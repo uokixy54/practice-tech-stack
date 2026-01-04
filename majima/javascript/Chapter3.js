@@ -30,7 +30,7 @@ const student1 = new Student("Kaito Majima");
 const student2 = new Student("Jhon Doe");
 console.log(student1.name);
 console.log(student2.name);
-console.log(student1.greet === student2.greet);
-console.log(student1.introduce === student2.introduce);
+console.log(student1.greet === student2.greet); // インスタンス毎にメソッドが作成されるためfalse
+console.log(student1.introduce === student2.introduce); // 共通のメソッド宣言のためtrue
 
 // 演習2 Object.create

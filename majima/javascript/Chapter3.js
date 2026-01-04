@@ -34,3 +34,13 @@ console.log(student1.greet === student2.greet); // インスタンス毎にメ�
 console.log(student1.introduce === student2.introduce); // 共通のメソッド宣言のためtrue
 
 // 演習2 Object.create
+// この方法はプロトタイプを自由に指定できる作り方
+const a = { x: 12 };
+const b = Object.create(a);
+console.log("a prottype: " + Object.getPrototypeOf(a));
+console.log("b prottype: " + Object.getPrototypeOf(b));
+console.log(Object.getPrototypeOf(a) === Object.getPrototypeOf(b)); // 同じプロトタイプは参照していないのでfalse、プロトタイプチェーンによる参照
+// 同じプロトタイプのオブジェクトを新規に作成
+const c = Object.create(Object.getPrototypeOf(a));
+console.log(Object.getPrototypeOf(a) === Object.getPrototypeOf(c)); // 同じプロトタイプを参照しているためtrue
+console.log("c prottype: " + Object.getPrototypeOf(c));

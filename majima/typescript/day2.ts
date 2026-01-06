@@ -104,5 +104,71 @@ function fn2_4(a?: "hello") {
     }
 }
 
-// ユーザー型ガードは後ほどやる
+// ユーザー定義型ガード
+interface Animal {
+    type: string;
+}
+interface Fish extends Animal {
+    type: "fish";
+    swim(): void;
+}
+interface Mammals extends Animal {
+    type: "mammals";
+    bark(): void;
+}
 
+function isFish(animal: Animal): animal is Fish {
+    return animal.type === "fish" && "swim" in animal;
+}
+
+function isMammals(animal: Animal): animal is Mammals {
+    return animal.type === "mammals" && "bark" in animal;
+}
+
+const printAnimalType = (animal: Animal) => {
+    // この時点では型はAnimal
+    //console.log(animal.swim);
+    //console.log(animal.bark);
+    if(isFish(animal)) {
+        console.log(animal.swim);
+    } else if (isMammals(animal)) {
+        console.log(animal.bark);
+    }
+}
+
+const fish: Fish = { type: "fish", swim: () => {} };
+const mammals: Mammals = { type: "mammals", bark: () => {} };
+printAnimalType(fish);
+printAnimalType(mammals);
+
+/**
+ * unknown型（p55）
+ * - anyとの違いはanyはほとんどの操作（呼び出し、プロパティにアクセス、被演算子にする）が許される
+ * - unknownは具体的に値を絞り込まないと何もできなくて安全
+ */
+const x1: any = 2;
+const y1: any = 2;
+const z1 = x1 + y1;
+
+const x2: unknown = 2;
+const y2: unknown = 2;
+let z2;
+// z2 = x2 + y2; // unknownであるためエラー
+if (typeof x2 === "number" && typeof y2 === "number") {
+    z2 = x2 + y2;
+}
+
+/**
+ * never型（pp56~57）
+ * - どんな値も入れられない（nuknownの真逆）
+ * - 処理上、到達不能な時にnuverになる
+ */
+// const never1: never = 123; // エラー
+
+const fn2_5 = (ab: "a" | "b") => {
+    if (ab === "a" || ab === "b") return;
+    console.log(ab); // abはnever型
+}
+
+// const neverReturn = () => { throw "error!" ; };
+// const returnedValue = neverReturn(); // returnedValueはnever型

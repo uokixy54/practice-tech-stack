@@ -172,3 +172,98 @@ const fn2_5 = (ab: "a" | "b") => {
 
 // const neverReturn = () => { throw "error!" ; };
 // const returnedValue = neverReturn(); // returnedValueはnever型
+
+// 複雑な型絞り込み（p58）
+type User2 = { name: string };
+
+// User2型であれば名前を返し、それ以外ではundefinedを返す
+function gerUserName(maybeUser2: unknown): string | undefined {
+    if (typeof maybeUser2 !== "object") return;
+    // maybeUser2は object | null型
+    if (maybeUser2 === null) return;
+    // maybeUser2は object型
+    if (!("name" in maybeUser2)) return;
+    // maybeUser2は { name: unknown }型
+    if (typeof maybeUser2.name !== "string") return;
+
+    return maybeUser2.name;
+}
+
+/**
+ * readonly（p59）
+ * - ランタイムでは書き換え可能
+ */
+type Obj2_6 = {
+    readonly prop: string;
+};
+const obj2_6: Obj2_6 = {
+    prop: "hello",
+};
+
+// obj2_6.prop = "goodbye"; // エラー
+
+/**
+ * ジェネリクス（pp60~63）
+ */
+
+// 引数をそのまま返すid関数で考える
+// const id = (arg) => arg;
+
+const idBoolean = (arg: boolean): boolean => arg;
+const idNumber = (arg: number): number => arg;
+// 型の分だけ作るのは大変
+
+// 型変数Tで引数の型をキャプチャ
+const id = <T>(arg: T): T => arg;
+const result = id<number>(123);
+
+// 型推論に任せることも可能
+const result1 = id(123);
+
+/**
+ * 演習2（pp64~69）
+ */
+// 問題1 記載のメソッドからSubject型を求める
+type Subject = { kind: "name"; payload: string; } | { kind: "favorite_food"; payload: Array<string>; };
+
+// 問題2 printSelfIntroduction関数でfavorite_foodのパターンを書き忘れてもエラーが出るようにする
+function printSelfIntroduction(subject: Subject) {
+    switch (subject.kind) {
+        case "name":
+            console.log(`私の名前は${subject.payload}です`);
+            return;
+        case "favorite_food":
+            console.log(`私の好きな食べ物は${subject.payload.join("と")}です`);
+            return;
+        default:
+            // const neverSub: never = subject;
+            // return;
+            // neverSub; // 回答例
+
+
+            subject satisfies never; // <-これ後で調べる
+    }
+}
+
+// 問題3 JS -> TS
+const msg3 = prompt("入力されたメッセージを大文字に変換します");
+if (typeof msg3 === "string") {
+    alert(msg3.toLocaleUpperCase());
+}
+
+// 問題4 ジェネリクスを使ってtriple関数作成
+function triple<T>(value: T): [T, T, T] {
+    return [value, value, value];
+}
+
+// 問題5 myArrayMap関数の作成
+function myArrayMap<T>(array: Array<unknown>, fn: (val: unknown) => T): Array<T> {
+    return array.map(v => fn(v));
+}
+function myArrayMap_ans<T, U>(array: Array<T>, fn: (val: T) => U): Array<U> {
+    const mappedArray: Array<U> = [];
+    for (const v of array) {
+        mappedArray.push(fn(v));
+    }
+    return mappedArray;
+}

@@ -241,7 +241,7 @@ function printSelfIntroduction(subject: Subject) {
             // neverSub; // 回答例
 
 
-            subject satisfies never; // <-これ後で調べる
+            subject satisfies never; 
     }
 }
 
@@ -267,3 +267,26 @@ function myArrayMap_ans<T, U>(array: Array<T>, fn: (val: T) => U): Array<U> {
     }
     return mappedArray;
 }
+
+/**
+ * satisfiesについて
+ * - 型注釈は型を上書きしてしまう
+ * - satisfiesは型推論を保持することができる
+ */
+ // なぜ便利か
+ type User1 = {
+    id: number;
+    name?: string;
+ }
+
+ const user1: User1 = {
+    id: 1,
+    name: "John",
+ };
+ // user1.name.toUpperCase(); // ここでuser1はUser1型に上書きされnameプロパティはstring | undefined型になる
+
+ const user2 = {
+    id: 1,
+    name: "John",
+ } satisfies User1;
+ user2.name.toUpperCase(); // satisfiesは上書きせずに型推論を保持できる

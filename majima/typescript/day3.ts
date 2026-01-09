@@ -29,3 +29,41 @@ console.log(`この動物は${animal3.name}です`);
 // 推移的
 // Pigeon ⊆ Bird ⊆ Animalならば
 // Pigion ⊆ Animal
+
+/**
+ * オブジェクトの部分型関係（pp76~78）
+ * - 規則1:上位型にないプロパティが部分的に存在していてもいい
+ * - 規則2:共通するプロパティについても部分型関係でなければならない
+ */
+
+type Animal3_2 = { name: string; };
+type Bird3_2 = { name: string; wings: "つばさ"; };
+type AnimalHouse = { resident: Animal3_2; };
+type BirdHouse = { resident: Bird3_2; };
+
+const birdHouse: BirdHouse = { resident: { name: "スズメ", wings: "つばさ" } };
+const animalHouse: AnimalHouse = birdHouse; // BirdHouse ⊆ AnimalHouseなので許される
+
+// 配列の部分型関係
+const birdArray: Array<Bird3_2> = [{ name: "スズメ", wings: "つばさ" }];
+const animalArray: Array<Animal3_2> = birdArray; // Bird ⊆ Animal ならば　Bird[] ⊆ Animal[]である
+
+for (const animal of animalArray) {
+    console.log(animal.name);
+    // console.log(animal.wings); // これはエラー
+}
+
+/**
+ * 関数の部分型関係（pp79~）
+ */
+type Animal3_3 = { name: string; };
+type Bird3_3 = { name: string; wings: "つばさ"; };
+
+let printBird = (bird: Bird3_3) => console.log(bird.name);
+
+const bird: Bird3_3 = { name: "スズメ", wings: "つばさ" };
+printBird(bird);
+
+let printAnimal = (animal: Animal3_3) => console.log(animal.name);
+printBird = printAnimal;
+// printAnimal = printBird // (animal: Animal) => voidに(bird: Bird) => voidは割り当てられない、ここだと前者はwingsプロパティを受け取れない

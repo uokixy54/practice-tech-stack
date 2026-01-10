@@ -67,3 +67,8 @@ printBird(bird);
 let printAnimal = (animal: Animal3_3) => console.log(animal.name);
 printBird = printAnimal;
 // printAnimal = printBird // (animal: Animal) => voidに(bird: Bird) => voidは割り当てられない、ここだと前者はwingsプロパティを受け取れない
+// 関数と変数は逆
+// 関数の引数は部分型にたいして上位型が来る分には必ず存在するプロパティが呼ばれるからOK
+// 逆に上位型に対して部分型の引数を許すと上位型にないプロパティが呼ばれる可能性があり型安全でなくなる
+// 変数の場合は上位型の変数に部分型を代入することは素の変数は上位型で扱われることになり共通部分のプロパティのみ呼ばれるから型安全
+// その逆は、部分型として扱っていると上位型にないプロパティにアクセスできてしまうから型安全でない

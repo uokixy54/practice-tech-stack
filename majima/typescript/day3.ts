@@ -54,7 +54,7 @@ for (const animal of animalArray) {
 }
 
 /**
- * 関数の部分型関係（pp79~）
+ * 関数の部分型関係（pp79~88）
  */
 type Animal3_3 = { name: string; };
 type Bird3_3 = { name: string; wings: "つばさ"; };
@@ -72,3 +72,64 @@ printBird = printAnimal;
 // 逆に上位型に対して部分型の引数を許すと上位型にないプロパティが呼ばれる可能性があり型安全でなくなる
 // 変数の場合は上位型の変数に部分型を代入することは素の変数は上位型で扱われることになり共通部分のプロパティのみ呼ばれるから型安全
 // その逆は、部分型として扱っていると上位型にないプロパティにアクセスできてしまうから型安全でない
+
+let getAnimal = (): Animal3_3 => ({ name: "すずめ" }); // (): Animal型
+let getBird = (): Bird3_3 => ({ name: "すずめ", wings: "つばさ" }); // (): Bird型
+
+getAnimal = getBird; // ここは変数の考え方と同じ
+
+// Bird ⊆ Animalのとき
+// (animal: Animal) => void を (bird: Bird) => voidの値と扱っても安全
+// (animal: Animal) => void ⊆ (bird: Bird) => void
+// 引数に着目すると、部分型の方に、上位型のAnimalが現れている（反変）
+// () => Birdの値を() => Animlの値と扱っても安全
+// () => Bird ⊆ () => Animal
+// 戻り値については、上位型の方に、部分型のBirdが現れている（共変）
+// T1 ⊆ S1 ∧ S2 ⊆ T2 ならば (S1) => S2 ⊆ (T1) => T2
+
+// 以上から以下の場合は代入不可
+let fnAnimal = (animal: Animal3_3) => animal;
+let fnBird = (bird: Bird3_3) => bird;
+
+// fnAnimal = fnBird;
+// fnBird = fnAnimal;
+
+// 以下は可能
+let fnAnimal1 = (animal: Animal3_3) => console.log("");
+let fnBird1 = (bird: Bird3_3) => console.log("");
+
+fnBird1 = fnAnimal1;
+
+let fnAnimal2 = (): Animal3_3 => ({ name: "すずめ" });
+let fnBird2 = (): Bird3_3 => ({ name: "すずめ", wings: "つばさ" });
+
+fnAnimal2 = fnBird2;
+
+/**
+ * 型アサーション（pp92~96）
+ */
+
+// HTMLElement | null型
+// const myCanvas = document.getElementById("main_canvas");
+// HTMLCanvasElement型
+//const myCanvas = document.getElementById("main_canvas") as HTMLCanvasElement;
+
+// アップキャスト
+// source as Targetのとき Source ⊆ Targetであること
+// bird as Animal
+// 常に安全（必要ないこともある）
+const animal: Animal3_3 = bird as Animal3_3;
+
+// ダウンキャスト
+// source as Targetのとき Target ⊆ Sourceであること
+// animal as Bird
+// 危険（ないプロパティにアクセスする可能背がある）
+// 以下のような理由があるときに基本使う
+const myCanvas = document.getElementById("main_canvas") as HTMLCanvasElement;
+
+// 部分型関係にない型へのキャストはできない
+// bird as Fish <- これはNG
+// bird as Animal as Fish <- これはできる
+// bird as unknown as Fish <- これはできる
+// 上位型を経由して部分型関係にない型にキャストすることを愚かなキャストという
+// JavaではClassCastExceptionとして認められない

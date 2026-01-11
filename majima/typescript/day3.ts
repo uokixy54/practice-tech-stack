@@ -133,3 +133,78 @@ const myCanvas = document.getElementById("main_canvas") as HTMLCanvasElement;
 // bird as unknown as Fish <- これはできる
 // 上位型を経由して部分型関係にない型にキャストすることを愚かなキャストという
 // JavaではClassCastExceptionとして認められない
+
+/**
+ * Intersection（pp97~98）
+ * - 交差型
+ */
+
+type A = number & unknown; // number
+type B = number & never; // never
+type C = { a: number } & { b: string };
+// C ⊆ { a: number } ∧ C ⊆ { b: string }であるCを考える
+// したがって
+// Cは{ a: number; b: string }型
+
+/**
+ * 演習3（pp99~104）
+ */
+// 問題1
+// const numLiteral1: 123 = 123;
+// const numLiteral2: 123 = (() => { throw "err"; })();
+// const num1: number =  456;
+// const num2: number = (() => { throw "err"; })();
+// const numArray: Array<number> = [123, (() => { throw "err"; })()];
+
+// 問題2
+const obj3: { name: string } = { name: "動物" };
+const obj4: { name: any } = { name: "動物" };
+const obj5: { name: unknown } = { name: "動物" };
+const obj6: { name: "動物" } = { name: "動物" };
+
+// 回答例
+// const obj7: any = { name: "動物" };
+// const obj8: unknown = { name: "動物" };
+// const obj9: {} = { name: "動物" };
+
+// 問題3
+const birds: Array<Bird3_3> = [
+    { name: "スズメ", wings: "つばさ" },
+    { name: "カラス", wings: "つばさ"},
+];
+const shouldExtract = (bird: Bird3_3): boolean => bird.name === "スズメ";
+const filterBirds = (birds: Array<Bird3_3>, shouldExtract: (bird: Bird3_3) => boolean): Array<Bird3_3> => {
+    const results: Array<Bird3_3> = [];
+    for (const bird of birds) {
+        if (shouldExtract(bird)) {
+            results.push(bird);
+        }
+    }
+    return results;
+}
+
+const shouldExtract1 = (animal: Animal3_3): boolean => animal.name === "カラス";
+const shouldExtract2 = (animal: Animal3_3): true => true;
+
+console.log("shouldExtract1: ", filterBirds(birds, shouldExtract1));
+console.log("shouldExtract2: ", filterBirds(birds, shouldExtract2));
+
+// 回答例
+// const shouldExtract3 = (maybeBird: unknown): boolean =>
+//     typeof maybeBird === "object" && maybeBird !== null && "name" in maybeBird
+//      ? maybeBird.name === "スズメ"
+//       : false;
+
+// const shouldExtract4 = (_: Bird3_3): true => true;
+// const shouldExtract5 = (_: Bird3_3): never => {
+//     while (true) {}
+// };
+
+// 問題4
+type D = { prop: { a: number } } & { prop: { b: string } }; // { prop: { a:number; b: string: } }型
+type E = number & 12345; // number型
+type F = "Love" & "peace"; // "Love" | "peace"型
+
+// 問題5
+const reNum = 123 as unknown as string;
+console.log(reNum.toLowerCase());

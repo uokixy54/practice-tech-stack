@@ -75,3 +75,10 @@ type EE = Readonly<{ a: number }>; // { readonly a: number }型
  *     - 外部システムとインターフェースの認識がずれていたなどの障害が起きる
  *     - 使用する通信プロトコルに合わせてIDLから型を生成するツールなどがある
  */
+
+/**
+ * 型パズル（pp131~137）
+ */
+
+// If型
+type If<S extends boolean, T, U> = S extends true ? T : U;

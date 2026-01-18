@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+        <!-- モジュールがない場合 -->
+        <!-- この程度は問題ないがコードが増えると煩雑になりバグの温床になる -->
+        <!-- srcで読み込むとさらにコードが見えなくなり依存関係などが分からなくなりバグにつながる -->
+        <!-- <script>
+            const name = "Taro";
+        </script>
+        <script>
+            const name = "Jiro"; // ここでエラーとなってしまう
+            document.body.textContent = name;
+        </script> -->
+
+
+
+        <!-- モジュールがある場合 -->
+        <!-- moduleを付けることによってヘッドタグで読み込んでも遅延評価によりエラーにならない -->
+        <!-- <script type="module">
+            const name = "Taro";
+        </script>
+        <script type="module">
+            const name = "Jiro";
+            document.body.textContent = name;
+        </script> -->
+        <script type="module" src="./Chapter7_1.js"></script>
+        <script type="module" src="./Chapter7_2.js"></script>
+    </body>
+</html>

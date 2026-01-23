@@ -13,3 +13,10 @@ console.log("All Import attr: " + allDist.studentNum);
 allDist.study();
 allDist.doHomework();
 // default exportは対象外
+
+
+
+// Side effect import
+// 変数や関数をimportするのではなくモジュール（ファイル）をimportする
+// 中身のJSが実行されるだけ
+// import "./side-effect.js";

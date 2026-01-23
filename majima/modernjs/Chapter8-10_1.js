@@ -1,4 +1,4 @@
-// Named export
+// named export
 export const studentNum = 123;
 export function study() {
     console.log("called study");

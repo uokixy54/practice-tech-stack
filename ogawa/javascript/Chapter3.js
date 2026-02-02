@@ -1,4 +1,4 @@
-// オブジェクト
+// オブジェクトリテラルを宣言する方法
 let shimabu = {
     name: "しまぶー", // プロパティ
     teachprogramming: function() {}, // メソッド
@@ -9,7 +9,7 @@ console.log("オブジェクトの内：", shimabu);
 shimabu.name = "しまぶーのIT大学"; // 追加
 shimabu.age = 20; // 変更
 
-console.log("shimabuオブジェクトの値を変更、追加", shimabu);
+console.log("shimabuオブジェクトの値を変更、追加：", shimabu);
 
 // オブジェクトのまとまりをプロパティともいえる
 // オブジェクトの入れ子構造
@@ -17,14 +17,14 @@ let youtuber = {
     list: {
         businessModel: {
             youtuber: [
-                {name: "しまぶー", age: 20},
-                {name: "あっちゃん", age: 22},
+                {name: "しまぶー：", age: 20},
+                {name: "あっちゃん：", age: 22},
             ]
         },
         entertainmentModel: {
             youtuber: [
-                {name: "ヒカキン", age: 30},
-                {name: "はじめしゃちょー", age: 25},
+                {name: "ヒカキン：", age: 30},
+                {name: "はじめしゃちょー：", age: 25},
             ]
         }
     },

@@ -33,7 +33,7 @@ let youtuber = {
 
 // オブジェクトのアクセス方法（基本はこっち）
 console.log("youtuberの中身：", youtuber);
-console.log("しまぶーの名前：", youtuber.list.businessModel.Youtuber[0].name);
+console.log("しまぶーの名前：", youtuber.list.businessModel.youtuber[0].name);
 console.log("メソッドの呼び出し：", youtuber.uploadvideo());
 
 // 角括弧を使ったアクセス方法

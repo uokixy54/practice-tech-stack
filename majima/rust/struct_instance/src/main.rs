@@ -1,3 +1,9 @@
+pub mod second; // secondモジュール呼び出し
+use second::hello; // メソッドの使用を明示
+
+pub mod third; // ネストされたモジュール呼び出し
+use third::return_three; // 階層と同名のファイルを経由して呼び出す
+
 // 構造体
 // タプルに近いもの
 struct User {
@@ -65,6 +71,13 @@ impl Message {
     fn show_this_message(&self) {
         println!("{:?}", self);
     }
+}
+
+#[derive(Debug)]
+enum Color2 {
+    Red,
+    Blue,
+    Green,
 }
 
 // 標準ライブラリで定義されているOption
@@ -141,6 +154,24 @@ fn main() {
     message = Message::ChangeColor(255, 0, 0);
     message.show_this_message();
 
+    let green = Color2::Green;
+    println!("Green Color Code: {}", color_to_str(&green));
+
+    let num = Some(5);
+    find_maybe_number(num);
+    find_maybe_number(None);
+
+    // matchはすべて実装必要だが一つでいいのがif let
+    // matchにはパターンマッチというものがたくさんあるので調べるとよい
+    let maybe_number: Option<u32> = Some(6);
+    if let Some(number) = maybe_number {
+        println!("number: {}", number);
+    } else {
+        println!("this is else stmt");
+    }
+
+    // secondモジュールの関数実行
+    hello();
 }
 
 // 引数で受け取ったものをそのまま使用する場合の省略記法
@@ -157,3 +188,21 @@ fn build_user(email: String, username: String) -> User {
 // fn area(reactangle: &Reactangle) -> u32 {
 //     reactangle.height * reactangle.width
 // }
+
+// match式
+// enumのすべてのパターンを記述しなくてはならない
+fn color_to_str(color: &Color2) -> &str {
+    match color {
+        Color2::Red => "#FF0000",
+        Color2::Blue => "#0000FF",
+        Color2::Green => "#00FF00",
+    }
+}
+
+// Option使い方
+fn find_maybe_number(maybe_number: Option<u32>) {
+    match maybe_number {
+        Some(number) => println!("found {}", number),
+        None => println!("Nothing found"),
+    }
+}
